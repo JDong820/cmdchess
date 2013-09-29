@@ -1,5 +1,6 @@
 from colorama import Back, Fore
 import time
+#Initial position of chess pieces.
 data = {
     (0, 0): Fore.BLACK+'\xe2\x99\x9c',
     (0, 1): Fore.BLACK+'\xe2\x99\x9e',
@@ -40,13 +41,6 @@ data = {
     #status
     (-2, -2): 0
 }
-
-def go(v):
-    for c in v:
-        if 'a' <= c <= 'z':
-            print c
-    time.sleep(3)
-    return True
 
 while 1:
     #Set move valid status (data[(-2, -2)]) to 0.
