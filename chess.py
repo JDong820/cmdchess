@@ -42,6 +42,11 @@ data = {
     (-2, -2): 0
 }
 
+def debug(a):
+    print a
+    time.sleep(3)
+    return a
+
 while 1:
     #Set move valid status (data[(-2, -2)]) to 0.
     #Display board.
@@ -50,10 +55,10 @@ while 1:
             ''+'' if data.update({(-2, -2): 0}) else\
     '\x1B[2J\x1B[H'+(''.join([(('\x1b[49m\n')*(lng%2)+'\x1b[49m\n')[:6] if\
         hgt==8 else\
-            Back.MAGENTA+(data[(lng, hgt)]+' ' if\
+            Back.MAGENTA+(data[(lng, hgt)]+" " if\
                 (lng, hgt) in data.keys() else "  ") if\
                         (lng+hgt)%2 else\
-            Back.CYAN+(data[(lng, hgt)]+' ' if\
+            Back.CYAN+(data[(lng, hgt)]+" " if\
                 (lng, hgt) in data.keys() else "  ")
         for lng in xrange(8) for hgt in xrange(9)]))+\
     '\n'+(("White"*data[(-1, -1)]+'Black')[:5])+"'s turn."
@@ -61,15 +66,36 @@ while 1:
     #If the move is invalid, do not set status (data[(-2, -2)]) to 1.
     (((data.update({(-2, -2): 1}),
        data.update({(-1, -1): (data[(-1, -1)]-1)**2})) if\
-        int(data[(8-int(data[(-1, 0)].split(' ')[0][1]),
-                 ord(data[(-1, 0)].split(' ')[0][0])-ord('a'))][3])/7 ==\
+        int(data[(8-int(data[(-1, 0)].split(" ")[0][1]),
+                 ord(data[(-1, 0)].split(" ")[0][0])-ord('a'))][3])/7 ==\
       data[(-1, -1)] else '') if\
-                data[(-1, 0)].count('')-1 == 5 and\
-                '1' <= data[(-1, 0)][1] <= '8' and\
-                '1' <= data[(-1, 0)][4] <= '8' and\
-                'a' <= data[(-1, 0)][0] <= 'h' and\
-                'a' <= data[(-1, 0)][3] <= 'h' else\
-     raw_input('Invalid input.')) if\
+            data[(-1, 0)].count('')-1 == 5 and\
+            '1' <= data[(-1, 0)][1] <= '8' and\
+            '1' <= data[(-1, 0)][4] <= '8' and\
+            'a' <= data[(-1, 0)][0] <= 'h' and\
+            'a' <= data[(-1, 0)][3] <= 'h' and\
+            ((8-int(data[(-1, 0)].split(' ')[0][1]),
+              ord(data[(-1, 0)].split(' ')[0][0])-ord('a')) in\
+                data.keys()) and\
+            ((not (8-int(data[(-1, 0)].split(' ')[1][1]),
+                   ord(data[(-1, 0)].split(' ')[1][0])-ord('a')) in\
+              data.keys() if\
+                (8-int(data[(-1, 0)].split(' ')[1][1]),
+                ord(data[(-1, 0)].split(' ')[1][0])-ord('a')) ==\
+                (8-int(data[(-1, 0)].split(' ')[0][1])-2*data[(-1, -1)]+1,
+                ord(data[(-1, 0)].split(' ')[0][0])-ord('a')) else\
+              (not (8-int(data[(-1, 0)].split(' ')[1][1]),
+                    ord(data[(-1, 0)].split(' ')[1][0])-ord('a')) in\
+               data.keys() if\
+                (8-int(data[(-1, 0)].split(' ')[1][1]),
+                ord(data[(-1, 0)].split(' ')[1][0])-ord('a')) ==\
+                (8-int(data[(-1, 0)].split(' ')[0][1])-4*data[(-1, -1)]+2,
+                ord(data[(-1, 0)].split(' ')[0][0])-ord('a')) else\
+                    False)) if\
+            data[(8-int(data[(-1, 0)].split(' ')[0][1]),
+                  ord(data[(-1, 0)].split(' ')[0][0])-ord('a'))][-1] ==\
+                '\x9f' else True) else\
+            raw_input('Invalid input.')) if\
     data.update({(-1, 0): raw_input(Fore.WHITE+">>")}) or True else ''
     #Apply move on data if valid
     data[(8-int(data[(-1, 0)].split(' ')[1][1]),
